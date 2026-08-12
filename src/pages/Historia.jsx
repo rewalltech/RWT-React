@@ -97,6 +97,11 @@ export default function Historia() {
                 <li>Emylli</li>
                 <li>Tuany</li>
               </ul>
+
+              <h3 className="jornal-subtitulo-secao">Orientação</h3>
+              <p>
+                O projeto conta com a orientação da Prof.ª Débora Barbosa.
+              </p>
             </div>
           </div>
         </article>
