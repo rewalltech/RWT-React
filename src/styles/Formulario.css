@@ -1,0 +1,527 @@
+/* ---------- Hero do formulário ---------- */
+
+.form-hero {
+  position: relative;
+  background:
+    radial-gradient(circle at 4px 4px, rgba(63, 193, 255, 0.16) 1.5px, transparent 1.6px),
+    radial-gradient(ellipse 900px 500px at 80% 10%, rgba(63, 193, 255, 0.16), transparent 60%),
+    linear-gradient(180deg, var(--preto) 0%, var(--azul-noite) 100%);
+  background-size: 26px 26px, auto, auto;
+  padding: 96px 32px 84px;
+  overflow: hidden;
+}
+
+.form-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.form-eyebrow {
+  display: inline-block;
+  font-family: var(--fonte-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--azul-ceu);
+  margin-bottom: 18px;
+}
+
+.form-hero-content h1 {
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+  line-height: 1.2;
+  color: var(--branco);
+  letter-spacing: -0.01em;
+}
+
+.form-hero-content h1 span {
+  color: var(--azul-ceu);
+  background: linear-gradient(90deg, var(--azul-ceu-suave), var(--azul-ceu));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.form-hero-content p {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: var(--cinza-texto);
+}
+
+.form-specs {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  border-top: 1px solid rgba(245, 248, 252, 0.12);
+  border-bottom: 1px solid rgba(245, 248, 252, 0.12);
+}
+
+.form-spec {
+  flex: 1;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-left: 1px solid rgba(245, 248, 252, 0.12);
+}
+
+.form-spec:first-child {
+  border-left: none;
+}
+
+.form-spec strong {
+  font-family: var(--fonte-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--azul-ceu);
+}
+
+.form-spec span {
+  font-size: 0.85rem;
+  color: var(--branco);
+}
+
+/* ---------- Layout geral ---------- */
+
+.form-section {
+  padding: 70px 32px 120px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ---------- Card único ---------- */
+
+.form-card {
+  position: relative;
+  background: var(--branco);
+  border: 1px solid rgba(10, 24, 48, 0.08);
+  border-radius: 20px;
+  padding: 48px 44px 40px;
+  overflow: hidden;
+}
+
+.form-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--azul-noite), var(--azul-ceu) 55%, var(--cobre));
+}
+
+.form-tag {
+  display: inline-block;
+  font-family: var(--fonte-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--cobre);
+  border: 1px solid rgba(201, 124, 74, 0.4);
+  border-radius: 999px;
+  padding: 5px 14px;
+  margin-bottom: 32px;
+}
+
+/* ---------- Blocos e trilha de circuito ---------- */
+
+.form-bloco-titulo {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.form-no {
+  font-family: var(--fonte-mono);
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--azul-ceu);
+  background: var(--azul-noite);
+  border-radius: 6px;
+  padding: 3px 8px;
+  line-height: 1.4;
+}
+
+.form-bloco-titulo h2 {
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--azul-noite);
+}
+
+.form-opcional {
+  font-family: var(--fonte-mono);
+  font-weight: 400;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9AA8BC;
+  margin-left: 6px;
+}
+
+.form-trilha {
+  position: relative;
+  height: 34px;
+  margin: 6px 4px;
+  display: flex;
+  align-items: center;
+}
+
+.form-trilha::before,
+.form-trilha::after {
+  content: "";
+  flex: 1;
+  height: 0;
+  border-top: 1.5px dashed var(--linha-trilha);
+}
+
+.form-trilha span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cobre-suave);
+  box-shadow: 0 0 0 4px rgba(201, 124, 74, 0.14);
+  flex-shrink: 0;
+}
+
+/* ---------- Campos ---------- */
+
+.form-linha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.form-grupo {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-grupo:last-child {
+  margin-bottom: 0;
+}
+
+.form-grupo label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--azul-noite);
+  margin-bottom: 8px;
+}
+
+.form-grupo input,
+.form-grupo textarea {
+  font-family: var(--fonte-corpo);
+  font-size: 0.95rem;
+  color: var(--azul-noite);
+  background: #FAFCFE;
+  border: 1.5px solid rgba(10, 24, 48, 0.14);
+  border-radius: 10px;
+  padding: 13px 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-grupo textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.form-grupo input::placeholder,
+.form-grupo textarea::placeholder {
+  color: #A9B7CC;
+}
+
+.form-grupo input:focus,
+.form-grupo textarea:focus {
+  outline: none;
+  background: var(--branco);
+  border-color: var(--azul-ceu);
+  box-shadow: 0 0 0 4px rgba(63, 193, 255, 0.14);
+}
+
+.form-grupo input.form-invalido,
+.form-grupo textarea.form-invalido,
+.form-select.form-invalido select {
+  border-color: #D5573E;
+}
+
+.form-erro {
+  display: block;
+  min-height: 16px;
+  font-size: 0.76rem;
+  color: #D5573E;
+  margin-top: 6px;
+}
+
+/* Select custom — sem a seta feia do navegador */
+.form-select {
+  position: relative;
+}
+
+.form-select select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--fonte-corpo);
+  font-size: 0.95rem;
+  color: var(--azul-noite);
+  background: #FAFCFE;
+  border: 1.5px solid rgba(10, 24, 48, 0.14);
+  border-radius: 10px;
+  padding: 13px 40px 13px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-select select:invalid {
+  color: #7C8AA0;
+}
+
+.form-select::after {
+  content: "";
+  position: absolute;
+  right: 17px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--azul-noite);
+  border-bottom: 2px solid var(--azul-noite);
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+}
+
+.form-select select:focus {
+  outline: none;
+  background: var(--branco);
+  border-color: var(--azul-ceu);
+  box-shadow: 0 0 0 4px rgba(63, 193, 255, 0.14);
+}
+
+/* ---------- Switch DIP (mão de apoio) ---------- */
+
+.form-dip {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.form-dip input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.form-dip-opcao {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.88rem;
+  color: var(--azul-noite);
+  background: #FAFCFE;
+  border: 1.5px solid rgba(10, 24, 48, 0.14);
+  border-radius: 10px;
+  padding: 10px 16px 10px 12px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.form-dip-chave {
+  position: relative;
+  width: 26px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(10, 24, 48, 0.14);
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.form-dip-chave::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--branco);
+  box-shadow: 0 1px 2px rgba(10, 24, 48, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.form-dip input[type="radio"]:checked + .form-dip-opcao {
+  border-color: var(--azul-ceu);
+  background: rgba(63, 193, 255, 0.08);
+  color: var(--azul-noite);
+  font-weight: 500;
+}
+
+.form-dip input[type="radio"]:checked + .form-dip-opcao .form-dip-chave {
+  background: var(--azul-ceu);
+}
+
+.form-dip input[type="radio"]:checked + .form-dip-opcao .form-dip-chave::after {
+  transform: translateX(12px);
+}
+
+.form-dip input[type="radio"]:focus-visible + .form-dip-opcao {
+  outline: 2px solid var(--azul-ceu);
+  outline-offset: 2px;
+}
+
+/* ---------- Botão e rodapé do card ---------- */
+
+.form-btn {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.form-btn[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-privacidade {
+  margin-top: 18px;
+  font-size: 0.78rem;
+  color: #7C8AA0;
+  text-align: center;
+}
+
+/* ---------- Estado de sucesso ---------- */
+
+.form-sucesso {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 30px 10px;
+}
+
+.form-sucesso--visivel {
+  display: flex;
+}
+
+.form-sucesso-icone {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--azul-noite), var(--azul-ceu));
+  color: var(--branco);
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.form-sucesso h3 {
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--azul-noite);
+  margin-bottom: 10px;
+}
+
+.form-sucesso p {
+  color: #4A5A72;
+  font-size: 0.95rem;
+  max-width: 380px;
+  margin-bottom: 26px;
+}
+
+/* ---------- Aviso de erro / offline ---------- */
+
+.form-offline-aviso {
+  display: none;
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 200;
+  max-width: 90%;
+  width: 460px;
+  background: var(--azul-noite);
+  color: var(--branco);
+  border: 1px solid rgba(63, 193, 255, 0.35);
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  box-shadow: 0 20px 40px -14px rgba(5, 7, 12, 0.5);
+}
+
+.form-offline-aviso--visivel {
+  display: block;
+  animation: aviso-entra 0.3s ease;
+}
+
+.form-offline-aviso a {
+  color: var(--azul-ceu);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+@keyframes aviso-entra {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ---------- Responsivo ---------- */
+
+@media (max-width: 640px) {
+  .form-hero {
+    padding: 80px 22px 64px;
+  }
+
+  .form-specs {
+    flex-direction: column;
+  }
+
+  .form-spec {
+    border-left: none;
+    border-top: 1px solid rgba(245, 248, 252, 0.12);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 4px;
+  }
+
+  .form-spec:first-child {
+    border-top: none;
+  }
+
+  .form-section {
+    padding: 50px 18px 90px;
+  }
+
+  .form-card {
+    padding: 34px 22px 30px;
+    border-radius: 16px;
+  }
+
+  .form-linha {
+    grid-template-columns: 1fr;
+  }
+
+  .form-dip {
+    flex-direction: column;
+  }
+}

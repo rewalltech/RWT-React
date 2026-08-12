@@ -1,0 +1,18 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './pages/Home.jsx'
+import Formulario from './pages/Formulario.jsx'
+import Galeria from './pages/Galeria.jsx'
+import Patrocinio from './pages/Patrocinio.jsx'
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/pedido" element={<Formulario />} />
+        <Route path="/galeria" element={<Galeria />} />
+        <Route path="/patrocinio" element={<Patrocinio />} />
+      </Routes>
+    </BrowserRouter>
+  )
+}

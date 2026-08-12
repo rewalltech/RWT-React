@@ -1,0 +1,269 @@
+/* ==========================================================================
+   Bengala Supersônica — Identidade Visual
+   Paleta: Azul-noite #0A1830 · Azul-céu #3FC1FF · Preto #05070C · Branco #F5F8FC
+   Conceito: velocidade, ondas de choque sônico, aerodinâmica
+   ========================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --azul-noite: #0A1830;
+  --azul-noite-2: #0F2140;
+  --azul-ceu: #3FC1FF;
+  --azul-ceu-suave: #8FE0FF;
+  --preto: #05070C;
+  --branco: #F5F8FC;
+  --cinza-texto: #A9B7CC;
+  --cobre: #C97C4A;
+  --cobre-suave: #E2A87C;
+  --linha-trilha: rgba(10, 24, 48, 0.14);
+
+  --fonte-display: 'Poppins', sans-serif;
+  --fonte-corpo: 'Poppins', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--branco);
+  color: var(--azul-noite);
+  font-family: var(--fonte-corpo);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ---------- Header ---------- */
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--preto);
+  border-bottom: 1px solid rgba(63, 193, 255, 0.15);
+}
+
+.menu {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--branco);
+  position: relative;
+  padding-left: 18px;
+}
+
+.logo::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background: var(--azul-ceu);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(63, 193, 255, 0.2),
+    -14px 0 6px -2px rgba(63, 193, 255, 0.35);
+}
+
+nav {
+  display: flex;
+  gap: 36px;
+}
+
+nav a {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--cinza-texto);
+  letter-spacing: 0.02em;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.25s ease;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--azul-ceu);
+  transition: width 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--branco);
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+/* ---------- Botão ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 38px;
+  background: var(--azul-ceu);
+  color: var(--preto);
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: 999px;
+  position: relative;
+  isolation: isolate;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  box-shadow: 0 0 0 0 rgba(63, 193, 255, 0.5);
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1px solid var(--azul-ceu);
+  z-index: -1;
+  transform: scale(1);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.btn:hover {
+  transform: translateX(4px);
+  background: var(--azul-ceu-suave);
+  box-shadow: 0 8px 24px -6px rgba(63, 193, 255, 0.55);
+}
+
+.btn:hover::before {
+  transform: scale(1.35);
+  opacity: 0;
+  animation: onda-sonica 0.8s ease-out;
+}
+
+@keyframes onda-sonica {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* ---------- Seções / Títulos ---------- */
+
+section {
+  padding: 100px 32px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.titulo {
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--azul-noite);
+  text-align: center;
+  margin-bottom: 56px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.titulo::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--azul-noite), var(--azul-ceu));
+  border-radius: 2px;
+}
+
+.titulo-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.titulo-link:hover {
+  color: var(--azul-ceu);
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  background: var(--preto);
+  padding: 28px 32px;
+  text-align: center;
+}
+
+footer p {
+  font-size: 0.82rem;
+  color: #5E6E85;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Responsivo (compartilhado) ---------- */
+
+@media (max-width: 768px) {
+  .menu {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  nav {
+    gap: 22px;
+  }
+
+  section {
+    padding: 70px 24px;
+  }
+}
+
+/* ---------- Acessibilidade ---------- */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--azul-ceu);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
