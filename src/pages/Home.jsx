@@ -78,21 +78,11 @@ export default function Home() {
       </section>
 
       <section id="galeria">
-        <h2 className="titulo titulo--com-acao">O projeto em construção</h2>
-
-        <h2 className="titulo titulo--com-acao">O projeto em construção</h2>
-
-       <div className="titulo-acao">
-          <Link to="/galeria" className="btn">
-            Ver galeria completa
-           </Link>
-       </div>
-
-       <div className="titulo titulo--com-acao">
-          <Link to="/galeria" className="btn">
-            Ver galeria completa
-           </Link>
-       </div>
+        <h2 className="titulo titulo--com-acao">
+          <Link to="/galeria" className="titulo-btn">
+            O projeto em construção
+          </Link>
+        </h2>
 
         <div className="galeria-grid">
           <figure className="galeria-item galeria-item--grande">
