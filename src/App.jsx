@@ -3,6 +3,7 @@ import Home from './pages/Home.jsx'
 import Formulario from './pages/Formulario.jsx'
 import Galeria from './pages/Galeria.jsx'
 import Patrocinio from './pages/Patrocinio.jsx'
+import Historia from './pages/Historia.jsx'
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/pedido" element={<Formulario />} />
         <Route path="/galeria" element={<Galeria />} />
         <Route path="/patrocinio" element={<Patrocinio />} />
+        <Route path="/historia" element={<Historia />} />
       </Routes>
     </BrowserRouter>
   )

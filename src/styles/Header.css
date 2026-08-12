@@ -1,0 +1,61 @@
+.header-menu {
+  position: relative;
+  margin-left: 20px;
+}
+
+.header-menu-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.header-menu-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--branco, #fff);
+  border-radius: 2px;
+}
+
+.header-menu-btn:hover {
+  border-color: var(--azul-ceu, #3fc1ff);
+  background: rgba(63, 193, 255, 0.08);
+}
+
+.header-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 220px;
+  background: var(--branco, #fff);
+  border: 1px solid rgba(10, 24, 48, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 16px 32px -12px rgba(10, 24, 48, 0.35);
+  padding: 8px;
+  z-index: 20;
+}
+
+.header-menu-dropdown a {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--azul-noite, #0a1830);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.header-menu-dropdown a:hover {
+  background: rgba(10, 24, 48, 0.06);
+}

@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import '../styles/Header.css'
 
 /**
  * Cabeçalho compartilhado.
@@ -8,6 +10,7 @@ import { Link } from 'react-router-dom'
  */
 export default function Header({ variant = 'inner', ctaLabel = 'Compre a Sua' }) {
   const isHome = variant === 'home'
+  const [menuAberto, setMenuAberto] = useState(false)
 
   return (
     <header>
@@ -33,6 +36,29 @@ export default function Header({ variant = 'inner', ctaLabel = 'Compre a Sua' })
             </>
           )}
         </nav>
+
+        <div className="header-menu">
+          <button
+            type="button"
+            className="header-menu-btn"
+            aria-haspopup="true"
+            aria-expanded={menuAberto}
+            aria-label="Abrir menu"
+            onClick={() => setMenuAberto((aberto) => !aberto)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          {menuAberto && (
+            <div className="header-menu-dropdown">
+              <Link to="/historia" onClick={() => setMenuAberto(false)}>
+                A história do projeto
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   )
