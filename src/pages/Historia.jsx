@@ -12,13 +12,12 @@ export default function Historia() {
           <p className="jornal-data">Santa Maria, RS — Edição especial</p>
           <h1 className="jornal-titulo-principal">Bengala Supersônica</h1>
           <p className="jornal-subtitulo">
-            Diário do Projeto · EEEM Professora Naura Teixeira Pinheiro
+            Comunica Naura · EEEM Professora Naura Teixeira Pinheiro
           </p>
           <div className="jornal-linha-dupla" />
         </div>
 
         <article className="jornal-materia">
-          <p className="jornal-kicker">Reportagem especial</p>
           <h2 className="jornal-manchete">
             De um robô inspirado em Wall-E a uma bengala que enxerga por sensores
           </h2>
@@ -84,7 +83,7 @@ export default function Historia() {
                 tecnologia assistiva de baixo custo.
               </p>
 
-              <h3 className="jornal-subtitulo-secao">Os fundadores</h3>
+              <h3 className="jornal-subtitulo-secao">Os Desenvolvedores</h3>
               <p>
                 A Bengala Supersônica é criada por um grupo de estudantes da EEEM Professora Naura
                 Teixeira Pinheiro:

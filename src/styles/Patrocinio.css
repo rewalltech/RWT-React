@@ -7,10 +7,10 @@
 .container {
   max-width: 700px;
   margin: 0 auto;
-  background: var(--branco);
+  background: var(--card-bg);
   padding: 32px;
   border-radius: 16px;
-  border: 1px solid rgba(10, 24, 48, 0.08);
+  border: 1px solid var(--card-borda);
   box-shadow: 0 20px 40px -24px rgba(10, 24, 48, 0.25);
   transition: border-color 0.2s ease;
 }
@@ -24,11 +24,11 @@
   font-family: var(--fonte-display);
   font-weight: 700;
   font-size: 1.8rem;
-  color: var(--azul-noite);
+  color: var(--texto);
 }
 
 .container > p {
-  color: #4A5A72;
+  color: var(--texto-suave);
   margin: 10px 0 28px;
 }
 
@@ -43,7 +43,7 @@
   margin-bottom: 6px;
   font-weight: 600;
   font-size: 0.9rem;
-  color: var(--azul-noite);
+  color: var(--texto);
 }
 
 .field-group input,
@@ -51,12 +51,12 @@
 .field-group textarea {
   width: 100%;
   padding: 12px 14px;
-  border: 1.5px solid rgba(10, 24, 48, 0.14);
+  border: 1.5px solid var(--input-borda);
   border-radius: 10px;
   font-size: 0.95rem;
   font-family: var(--fonte-corpo);
-  background: #FAFCFE;
-  color: var(--azul-noite);
+  background: var(--bg-alt);
+  color: var(--texto);
   box-sizing: border-box;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -140,7 +140,7 @@
 }
 
 .link-termos:hover {
-  color: var(--azul-noite);
+  color: var(--texto);
 }
 
 dialog#modalTermos {
@@ -149,6 +149,8 @@ dialog#modalTermos {
   border: none;
   border-radius: 12px;
   padding: 32px;
+  background: var(--card-bg);
+  color: var(--texto);
 }
 
 dialog#modalTermos::backdrop {
@@ -158,13 +160,13 @@ dialog#modalTermos::backdrop {
 dialog#modalTermos h2 {
   margin-top: 0;
   font-family: var(--fonte-display);
-  color: var(--azul-noite);
+  color: var(--texto);
 }
 
 dialog#modalTermos .modal-conteudo {
   margin: 16px 0 24px;
   line-height: 1.6;
-  color: #4A5A72;
+  color: var(--texto-suave);
 }
 
 dialog#modalTermos #fecharModal {

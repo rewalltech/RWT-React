@@ -1,64 +1,72 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import '../styles/Header.css'
+import { useTheme } from '../hooks/useTheme.js'
 
 /**
  * Cabeçalho compartilhado.
  * - Na home (`variant="home"`) os links de âncora navegam dentro da própria página.
  * - Nas demais páginas, apontam de volta para a home com a âncora correspondente,
  *   e o último item vira "Voltar ao site".
+ * - Todas as opções ficam dentro do menu hambúrguer, fixo no canto superior
+ *   direito da tela em qualquer tamanho de dispositivo.
+ * - Ao lado, um botão fixo alterna entre tema claro e escuro em todo o site.
  */
 export default function Header({ variant = 'inner', ctaLabel = 'Compre a Sua' }) {
   const isHome = variant === 'home'
-  const [menuAberto, setMenuAberto] = useState(false)
+  const [aberto, setAberto] = useState(false)
+  const { tema, alternarTema } = useTheme()
+
+  function fechar() {
+    setAberto(false)
+  }
 
   return (
     <header>
       <div className="menu">
         <div className="logo">Bengala Supersônica</div>
 
-        <nav>
+        <button
+          className="tema-toggle"
+          onClick={alternarTema}
+          aria-label={tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
+          title={tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
+        >
+          {tema === 'dark' ? '☀' : '☾'}
+        </button>
+
+        <button
+          className={`menu-toggle ${aberto ? 'menu-toggle--aberto' : ''}`}
+          onClick={() => setAberto((v) => !v)}
+          aria-expanded={aberto}
+          aria-controls="menu-nav"
+          aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav id="menu-nav" className={aberto ? 'nav--aberto' : ''}>
           {isHome ? (
             <>
-              <a href="#sobre">Sobre</a>
-              <a href="#vantagens">Vantagens</a>
-              <a href="#galeria">Galeria</a>
-              <a href="#patrocinio">Patrocínio</a>
-              <a href="#inscricao">{ctaLabel}</a>
+              <a href="#sobre" onClick={fechar}>Sobre</a>
+              <a href="#vantagens" onClick={fechar}>Vantagens</a>
+              <a href="#galeria" onClick={fechar}>Galeria</a>
+              <Link to="/historia" onClick={fechar}>História</Link>
+              <a href="#patrocinio" onClick={fechar}>Patrocínio</a>
+              <a href="#inscricao" onClick={fechar}>{ctaLabel}</a>
             </>
           ) : (
             <>
-              <Link to="/#sobre">Sobre</Link>
-              <Link to="/#vantagens">Vantagens</Link>
-              <Link to="/#galeria">Galeria</Link>
-              <Link to="/#patrocinio">Patrocínio</Link>
-              <Link to="/">Voltar ao site</Link>
+              <Link to="/#sobre" onClick={fechar}>Sobre</Link>
+              <Link to="/#vantagens" onClick={fechar}>Vantagens</Link>
+              <Link to="/#galeria" onClick={fechar}>Galeria</Link>
+              <Link to="/historia" onClick={fechar}>História</Link>
+              <Link to="/#patrocinio" onClick={fechar}>Patrocínio</Link>
+              <Link to="/" onClick={fechar}>Voltar ao site</Link>
             </>
           )}
         </nav>
-
-        <div className="header-menu">
-          <button
-            type="button"
-            className="header-menu-btn"
-            aria-haspopup="true"
-            aria-expanded={menuAberto}
-            aria-label="Abrir menu"
-            onClick={() => setMenuAberto((aberto) => !aberto)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-
-          {menuAberto && (
-            <div className="header-menu-dropdown">
-              <Link to="/historia" onClick={() => setMenuAberto(false)}>
-                A história do projeto
-              </Link>
-            </div>
-          )}
-        </div>
       </div>
     </header>
   )

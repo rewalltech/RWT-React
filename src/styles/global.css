@@ -25,6 +25,26 @@
   --fonte-display: 'Poppins', sans-serif;
   --fonte-corpo: 'Poppins', sans-serif;
   --fonte-mono: 'JetBrains Mono', monospace;
+
+  /* Tokens semânticos — tema claro (padrão).
+     O header/menu e o footer usam --preto diretamente e NÃO seguem o tema. */
+  --bg: var(--branco);
+  --bg-alt: #FAFCFE;
+  --texto: var(--azul-noite);
+  --texto-suave: #4A5A72;
+  --card-bg: var(--branco);
+  --card-borda: rgba(10, 24, 48, 0.08);
+  --input-borda: rgba(10, 24, 48, 0.14);
+}
+
+[data-theme="dark"] {
+  --bg: #0A1420;
+  --bg-alt: #101B2C;
+  --texto: #F5F8FC;
+  --texto-suave: #A9B7CC;
+  --card-bg: #101B2C;
+  --card-borda: rgba(245, 248, 252, 0.1);
+  --input-borda: rgba(245, 248, 252, 0.16);
 }
 
 html {
@@ -32,8 +52,8 @@ html {
 }
 
 body {
-  background-color: var(--branco);
-  color: var(--azul-noite);
+  background-color: var(--bg);
+  color: var(--texto);
   font-family: var(--fonte-corpo);
   font-weight: 400;
   line-height: 1.6;
@@ -88,38 +108,119 @@ header {
     -14px 0 6px -2px rgba(63, 193, 255, 0.35);
 }
 
-nav {
+/* nav (menu de navegação) definido mais abaixo, junto do botão hambúrguer */
+
+/* ---------- Botão de tema (claro/escuro) ---------- */
+
+.tema-toggle {
   display: flex;
-  gap: 36px;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(245, 248, 252, 0.2);
+  border-radius: 50%;
+  color: var(--branco);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  position: fixed;
+  top: 18px;
+  right: 64px;
+  z-index: 110;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.tema-toggle:hover {
+  border-color: var(--azul-ceu);
+  color: var(--azul-ceu);
+  transform: scale(1.06);
+}
+
+/* ---------- Botão hambúrguer ---------- */
+
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  z-index: 110;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--branco);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.menu-toggle--aberto span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle--aberto span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle--aberto span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------- Painel de navegação (dropdown, todos os tamanhos) ---------- */
+
+nav {
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  position: fixed;
+  top: 64px;
+  right: 20px;
+  z-index: 105;
+  width: 220px;
+  gap: 2px;
+  background: var(--preto);
+  border: 1px solid rgba(63, 193, 255, 0.15);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 20px 40px -14px rgba(5, 7, 12, 0.6);
+}
+
+nav.nav--aberto {
+  display: flex;
 }
 
 nav a {
+  width: 100%;
+  text-align: center;
+  padding: 12px 0;
+  border-radius: 8px;
   font-size: 0.92rem;
   font-weight: 500;
   color: var(--cinza-texto);
   letter-spacing: 0.02em;
-  position: relative;
-  padding-bottom: 4px;
-  transition: color 0.25s ease;
-}
-
-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 2px;
-  background: var(--azul-ceu);
-  transition: width 0.3s ease;
+  transition: color 0.2s ease, background 0.2s ease;
 }
 
 nav a:hover {
   color: var(--branco);
+  background: rgba(63, 193, 255, 0.08);
 }
 
-nav a:hover::after {
-  width: 100%;
+nav a::after {
+  display: none;
 }
 
 /* ---------- Botão ---------- */
@@ -193,7 +294,7 @@ section {
   font-family: var(--fonte-display);
   font-weight: 600;
   font-size: clamp(1.6rem, 3vw, 2.2rem);
-  color: var(--azul-noite);
+  color: var(--texto);
   text-align: center;
   margin-bottom: 56px;
   position: relative;
@@ -238,18 +339,19 @@ footer p {
 /* ---------- Responsivo (compartilhado) ---------- */
 
 @media (max-width: 768px) {
-  .menu {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-  }
-
-  nav {
-    gap: 22px;
-  }
-
   section {
     padding: 70px 24px;
+  }
+}
+
+@media (max-width: 400px) {
+  nav {
+    width: calc(100vw - 40px);
+    right: 20px;
+  }
+
+  nav a {
+    font-size: 0.85rem;
   }
 }
 
