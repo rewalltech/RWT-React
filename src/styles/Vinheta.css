@@ -124,6 +124,9 @@
   position: relative;
 }
 
+/* Duração retimada para acompanhar os 5s em tela definidos no Vinheta.jsx:
+   0.6s de atraso + 4.3s de preenchimento = termina em ~4.9s, pouco antes
+   do timeout de 5000ms disparar o fechamento. */
 .vinheta-progresso::after {
   content: '';
   position: absolute;
@@ -131,7 +134,7 @@
   left: 0;
   width: 0;
   background: var(--accent, #6f6fff);
-  animation: vinheta-carregar 2.1s ease 0.6s forwards;
+  animation: vinheta-carregar 4.3s ease 0.6s forwards;
 }
 
 @keyframes vinheta-carregar {

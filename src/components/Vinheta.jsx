@@ -18,7 +18,7 @@ export default function Vinheta({ forceShow = false, onFinish }) {
     const prefersReduced = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
-    const duracao = prefersReduced ? 900 : 2800;
+    const duracao = prefersReduced ? 900 : 5000;
 
     const timer = setTimeout(() => encerrar(), duracao);
     return () => clearTimeout(timer);
