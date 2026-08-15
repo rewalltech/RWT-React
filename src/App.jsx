@@ -4,9 +4,11 @@ import Formulario from './pages/Formulario.jsx'
 import Galeria from './pages/Galeria.jsx'
 import Patrocinio from './pages/Patrocinio.jsx'
 import Historia from './pages/Historia.jsx'
+import Vinheta from './components/Vinheta';
 
 export default function App() {
   return (
+    <Vinheta />
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
