@@ -1,0 +1,177 @@
+.vinheta-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  background: var(--bg, #0e1015);
+  animation: vinheta-entrar 0.4s ease both;
+}
+
+.vinheta-overlay.vinheta-saindo {
+  animation: vinheta-sair 0.5s ease both;
+  pointer-events: none;
+}
+
+@keyframes vinheta-entrar {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vinheta-sair {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+}
+
+.vinheta-marca {
+  position: relative;
+  width: 120px;
+  height: 90px;
+}
+
+.vinheta-barra {
+  position: absolute;
+  inset-inline: 0;
+  margin: 0 auto;
+  width: 84px;
+  height: 16px;
+  border-radius: 4px;
+  background: var(--accent-bg, #232634);
+  border: 2px solid var(--accent, #6f6fff);
+  opacity: 0;
+  transform: perspective(1000px) rotateX(60deg) rotateZ(300deg) scale(0.4);
+}
+
+.vinheta-barra-r {
+  top: 4px;
+  animation: vinheta-monta 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s forwards;
+}
+
+.vinheta-barra-w {
+  top: 34px;
+  animation: vinheta-monta 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s forwards;
+}
+
+.vinheta-barra-t {
+  top: 64px;
+  animation: vinheta-monta 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.55s forwards;
+}
+
+@keyframes vinheta-monta {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(60deg) rotateZ(300deg) scale(0.4);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(40deg) rotateZ(340deg) scale(1);
+  }
+}
+
+.vinheta-nome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  opacity: 0;
+  animation: vinheta-subir 0.6s ease 1.05s forwards;
+}
+
+.vinheta-nome span:first-child {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  color: var(--text-h, #f4f4f5);
+}
+
+.vinheta-sub {
+  font-size: 13px;
+  color: var(--accent, #6f6fff);
+  letter-spacing: 0.08em;
+}
+
+@keyframes vinheta-subir {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vinheta-progresso {
+  width: 160px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--border, #2a2d38);
+  overflow: hidden;
+  position: relative;
+}
+
+.vinheta-progresso::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 0;
+  background: var(--accent, #6f6fff);
+  animation: vinheta-carregar 2.1s ease 0.6s forwards;
+}
+
+@keyframes vinheta-carregar {
+  to {
+    width: 100%;
+  }
+}
+
+.vinheta-pular {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  background: transparent;
+  border: 1px solid var(--border, #2a2d38);
+  color: var(--text-h, #f4f4f5);
+  border-radius: 5px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0;
+  animation: vinheta-subir 0.4s ease 1.2s forwards;
+  transition: border-color 0.3s;
+}
+
+.vinheta-pular:hover {
+  border-color: var(--accent-border, var(--accent, #6f6fff));
+}
+
+.vinheta-pular:focus-visible {
+  outline: 2px solid var(--accent, #6f6fff);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vinheta-barra,
+  .vinheta-nome,
+  .vinheta-pular,
+  .vinheta-progresso::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transform: none !important;
+  }
+}
