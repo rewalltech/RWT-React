@@ -291,7 +291,7 @@ export default function Formulario() {
         Não foi possível enviar pelo site agora. Você pode falar direto com a gente pelo{' '}
         <a href="https://wa.me/5555991697926" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         {' '}ou por{' '}
-        <a href="mailto:contato@bengalasupersonica.com.br">e-mail</a>.
+        <a href="mailto:rewalltech@gmail.com?subject=Contato pelo site&body=Olá!">e-mail</a>
       </div>
     </>
   )

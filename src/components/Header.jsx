@@ -25,26 +25,28 @@ export default function Header({ variant = 'inner', ctaLabel = 'Compre a Sua' })
       <div className="menu">
         <div className="logo">Bengala Supersônica</div>
 
-        <button
-          className="tema-toggle"
-          onClick={alternarTema}
-          aria-label={tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
-          title={tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
-        >
-          {tema === 'dark' ? '☀' : '☾'}
-        </button>
+        <div className="menu-acoes">
+          <button
+            className="tema-toggle"
+            onClick={alternarTema}
+            aria-label={tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
+            title={tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
+          >
+            {tema === 'dark' ? '☀' : '☾'}
+          </button>
 
-        <button
-          className={`menu-toggle ${aberto ? 'menu-toggle--aberto' : ''}`}
-          onClick={() => setAberto((v) => !v)}
-          aria-expanded={aberto}
-          aria-controls="menu-nav"
-          aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+          <button
+            className={`menu-toggle ${aberto ? 'menu-toggle--aberto' : ''}`}
+            onClick={() => setAberto((v) => !v)}
+            aria-expanded={aberto}
+            aria-controls="menu-nav"
+            aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
 
         <nav id="menu-nav" className={aberto ? 'nav--aberto' : ''}>
           {isHome ? (

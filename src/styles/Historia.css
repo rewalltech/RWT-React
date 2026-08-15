@@ -1,9 +1,30 @@
 /* ---------- Estilo jornal ---------- */
 
 .jornal {
-  background: #f7f3ea;
+  /* Tons de "papel e tinta" — claro por padrão (jornal impresso). */
+  --jornal-fundo: #f7f3ea;
+  --jornal-tinta: #14110c;
+  --jornal-tinta-suave: #4a4130;
+  --jornal-tinta-suave-2: #6b5f4d;
+  --jornal-destaque: #a6321f;
+  --jornal-borda: rgba(20, 17, 12, 0.25);
+  --jornal-borda-suave: rgba(20, 17, 12, 0.2);
+
+  background: var(--jornal-fundo);
   min-height: 100vh;
   padding: 56px 24px 96px;
+  transition: background 0.25s ease;
+}
+
+/* Tema escuro: "jornal lido à noite" — papel escuro, tinta clara, mesmo desenho. */
+[data-theme="dark"] .jornal {
+  --jornal-fundo: #17140f;
+  --jornal-tinta: #EDE6D6;
+  --jornal-tinta-suave: #C9BFA8;
+  --jornal-tinta-suave-2: #A79C86;
+  --jornal-destaque: #E2603F;
+  --jornal-borda: rgba(237, 230, 214, 0.25);
+  --jornal-borda-suave: rgba(237, 230, 214, 0.2);
 }
 
 .jornal-masthead {
@@ -17,7 +38,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #6b5f4d;
+  color: var(--jornal-tinta-suave-2);
   margin-bottom: 10px;
 }
 
@@ -26,7 +47,7 @@
   font-weight: 900;
   font-size: clamp(2.6rem, 7vw, 4.6rem);
   letter-spacing: -0.01em;
-  color: #14110c;
+  color: var(--jornal-tinta);
   margin: 0;
   line-height: 1;
 }
@@ -35,7 +56,7 @@
   font-family: 'Source Serif 4', serif;
   font-style: italic;
   font-size: 0.95rem;
-  color: #4a4130;
+  color: var(--jornal-tinta-suave);
   margin-top: 10px;
 }
 
@@ -43,8 +64,8 @@
   margin: 24px auto 0;
   max-width: 900px;
   height: 5px;
-  border-top: 3px solid #14110c;
-  border-bottom: 1px solid #14110c;
+  border-top: 3px solid var(--jornal-tinta);
+  border-bottom: 1px solid var(--jornal-tinta);
 }
 
 .jornal-materia {
@@ -58,7 +79,7 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #a6321f;
+  color: var(--jornal-destaque);
   margin-bottom: 10px;
 }
 
@@ -67,7 +88,7 @@
   font-weight: 800;
   font-size: clamp(1.8rem, 4.2vw, 2.7rem);
   line-height: 1.15;
-  color: #14110c;
+  color: var(--jornal-tinta);
   margin: 0 0 14px;
 }
 
@@ -75,8 +96,8 @@
   font-family: 'Source Serif 4', serif;
   font-style: italic;
   font-size: 1.15rem;
-  color: #4a4130;
-  border-bottom: 1px solid rgba(20, 17, 12, 0.25);
+  color: var(--jornal-tinta-suave);
+  border-bottom: 1px solid var(--jornal-borda);
   padding-bottom: 28px;
   margin-bottom: 32px;
 }
@@ -94,23 +115,23 @@
   width: 100%;
   display: block;
   filter: grayscale(0.15) contrast(1.05);
-  border: 1px solid #14110c;
+  border: 1px solid var(--jornal-tinta);
 }
 
 .jornal-foto figcaption {
   font-family: var(--fonte-mono, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
-  color: #6b5f4d;
+  color: var(--jornal-tinta-suave-2);
   margin-top: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(20, 17, 12, 0.2);
+  border-bottom: 1px solid var(--jornal-borda-suave);
 }
 
 .jornal-texto {
   font-family: 'Source Serif 4', serif;
   font-size: 1.08rem;
   line-height: 1.75;
-  color: #241f16;
+  color: var(--jornal-tinta);
   column-count: 1;
 }
 
@@ -123,7 +144,7 @@
   font-family: 'Playfair Display', serif;
   font-weight: 700;
   font-size: 1.4rem;
-  color: #14110c;
+  color: var(--jornal-tinta);
   margin: 0 0 14px;
   padding-top: 6px;
 }
@@ -135,7 +156,7 @@
   font-size: 3.6rem;
   line-height: 0.8;
   padding: 6px 8px 0 0;
-  color: #a6321f;
+  color: var(--jornal-destaque);
 }
 
 .jornal-citacao {
@@ -144,8 +165,8 @@
   font-weight: 600;
   font-size: 1.4rem;
   line-height: 1.4;
-  color: #14110c;
-  border-left: 4px solid #a6321f;
+  color: var(--jornal-tinta);
+  border-left: 4px solid var(--jornal-destaque);
   padding: 4px 0 4px 22px;
   margin: 32px 0;
 }
@@ -160,10 +181,10 @@
 }
 
 .jornal-fundadores li {
-  border: 1px solid #14110c;
+  border: 1px solid var(--jornal-tinta);
   padding: 6px 16px;
   font-size: 0.85rem;
-  color: #14110c;
+  color: var(--jornal-tinta);
 }
 
 @media (min-width: 760px) {
