@@ -7,41 +7,57 @@
   align-items: center;
   justify-content: center;
   gap: 28px;
-  background: var(--bg, #0e1015);
   animation: vinheta-entrar 0.4s ease both;
+
+  /* Tema padrão (escuro) */
+  --v-bg: #0e1015;
+  --v-accent: #6f6fff;
+  --v-accent-bg: #232634;
+  --v-text-h: #f4f4f5;
+  --v-border: #2a2d38;
+
+  background: var(--v-bg);
+}
+
+/* Tema claro via preferência do sistema (celular no modo claro) */
+@media (prefers-color-scheme: light) {
+  .vinheta-overlay {
+    --v-bg: #f4f4f5;
+    --v-accent: #4a4aff;
+    --v-accent-bg: #e4e4ff;
+    --v-text-h: #14151a;
+    --v-border: #d6d6dd;
+  }
+}
+
+/* Tema claro via classe/atributo, caso o app controle o tema manualmente
+   (ajuste o seletor abaixo para o que o RWT realmente usa) */
+html.light .vinheta-overlay,
+[data-theme='light'] .vinheta-overlay {
+  --v-bg: #f4f4f5;
+  --v-accent: #4a4aff;
+  --v-accent-bg: #e4e4ff;
+  --v-text-h: #14151a;
+  --v-border: #d6d6dd;
 }
 
 .vinheta-overlay.vinheta-saindo {
   animation: vinheta-sair 0.5s ease both;
   pointer-events: none;
 }
-
 @keyframes vinheta-entrar {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-
 @keyframes vinheta-sair {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(1.03);
-  }
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.03); }
 }
-
 .vinheta-marca {
   position: relative;
   width: 120px;
   height: 90px;
 }
-
 .vinheta-barra {
   position: absolute;
   inset-inline: 0;
@@ -49,27 +65,23 @@
   width: 84px;
   height: 16px;
   border-radius: 4px;
-  background: var(--accent-bg, #232634);
-  border: 2px solid var(--accent, #6f6fff);
+  background: var(--v-accent-bg);
+  border: 2px solid var(--v-accent);
   opacity: 0;
   transform: perspective(1000px) rotateX(60deg) rotateZ(300deg) scale(0.4);
 }
-
 .vinheta-barra-r {
   top: 4px;
   animation: vinheta-monta 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s forwards;
 }
-
 .vinheta-barra-w {
   top: 34px;
   animation: vinheta-monta 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s forwards;
 }
-
 .vinheta-barra-t {
   top: 64px;
   animation: vinheta-monta 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.55s forwards;
 }
-
 @keyframes vinheta-monta {
   0% {
     opacity: 0;
@@ -80,7 +92,6 @@
     transform: perspective(1000px) rotateX(40deg) rotateZ(340deg) scale(1);
   }
 }
-
 .vinheta-nome {
   display: flex;
   flex-direction: column;
@@ -90,66 +101,48 @@
   opacity: 0;
   animation: vinheta-subir 0.6s ease 1.05s forwards;
 }
-
 .vinheta-nome span:first-child {
   font-size: 28px;
   font-weight: 600;
   letter-spacing: 0.4em;
-  color: var(--text-h, #f4f4f5);
+  color: var(--v-text-h);
 }
-
 .vinheta-sub {
   font-size: 13px;
-  color: var(--accent, #6f6fff);
+  color: var(--v-accent);
   letter-spacing: 0.08em;
 }
-
 @keyframes vinheta-subir {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 .vinheta-progresso {
   width: 160px;
   height: 2px;
   border-radius: 2px;
-  background: var(--border, #2a2d38);
+  background: var(--v-border);
   overflow: hidden;
   position: relative;
 }
-
-/* Duração retimada para acompanhar os 5s em tela definidos no Vinheta.jsx:
-   0.6s de atraso + 4.3s de preenchimento = termina em ~4.9s, pouco antes
-   do timeout de 5000ms disparar o fechamento. */
 .vinheta-progresso::after {
   content: '';
   position: absolute;
   inset-block: 0;
   left: 0;
   width: 0;
-  background: var(--accent, #6f6fff);
+  background: var(--v-accent);
   animation: vinheta-carregar 4.3s ease 0.6s forwards;
 }
-
 @keyframes vinheta-carregar {
-  to {
-    width: 100%;
-  }
+  to { width: 100%; }
 }
-
 .vinheta-pular {
   position: absolute;
   bottom: 28px;
   right: 28px;
   background: transparent;
-  border: 1px solid var(--border, #2a2d38);
-  color: var(--text-h, #f4f4f5);
+  border: 1px solid var(--v-border);
+  color: var(--v-text-h);
   border-radius: 5px;
   padding: 6px 14px;
   font-size: 13px;
@@ -158,16 +151,13 @@
   animation: vinheta-subir 0.4s ease 1.2s forwards;
   transition: border-color 0.3s;
 }
-
 .vinheta-pular:hover {
-  border-color: var(--accent-border, var(--accent, #6f6fff));
+  border-color: var(--v-accent);
 }
-
 .vinheta-pular:focus-visible {
-  outline: 2px solid var(--accent, #6f6fff);
+  outline: 2px solid var(--v-accent);
   outline-offset: 2px;
 }
-
 @media (prefers-reduced-motion: reduce) {
   .vinheta-barra,
   .vinheta-nome,
