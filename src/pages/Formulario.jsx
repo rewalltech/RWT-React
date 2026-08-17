@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
+import { emailValido, formatarTelefone } from '../hooks/validacao.js'
 import '../styles/Formulario.css'
 
 const API_URL = '/api/pedido'
@@ -30,6 +31,14 @@ export default function Formulario() {
     setErros((atual) => ({ ...atual, [campo]: '' }))
   }
 
+  function validarEmailAoSair() {
+    const valor = dados.email.trim()
+    if (!valor) return
+    if (!emailValido(valor)) {
+      setErros((atual) => ({ ...atual, email: 'Informe um e-mail válido (com @ e domínio).' }))
+    }
+  }
+
   function validar() {
     const novosErros = {}
 
@@ -40,9 +49,8 @@ export default function Formulario() {
     })
 
     if (dados.email && dados.email.trim() && !novosErros.email) {
-      const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dados.email.trim())
-      if (!emailValido) {
-        novosErros.email = 'Informe um e-mail válido.'
+      if (!emailValido(dados.email)) {
+        novosErros.email = 'Informe um e-mail válido (com @ e domínio).'
       }
     }
 
@@ -144,8 +152,9 @@ export default function Formulario() {
                     id="telefone"
                     className={erros.telefone ? 'form-invalido' : ''}
                     placeholder="(00) 00000-0000"
+                    maxLength={15}
                     value={dados.telefone}
-                    onChange={(e) => atualizarCampo('telefone', e.target.value)}
+                    onChange={(e) => atualizarCampo('telefone', formatarTelefone(e.target.value))}
                   />
                   <span className="form-erro">{erros.telefone}</span>
                 </div>
@@ -159,6 +168,7 @@ export default function Formulario() {
                     placeholder="voce@email.com"
                     value={dados.email}
                     onChange={(e) => atualizarCampo('email', e.target.value)}
+                    onBlur={validarEmailAoSair}
                   />
                   <span className="form-erro">{erros.email}</span>
                 </div>
