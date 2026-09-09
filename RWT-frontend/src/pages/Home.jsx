@@ -11,14 +11,8 @@ export default function Home() {
       <section className="hero">
         <div className="hero-content">
           <h1>
-            Ande mais rápido com a <span>Bengala Supersônica</span>
+            <span>Bengala Supersônica</span>
           </h1>
-
-          <p>
-            Chega de caminhar sem ter noção do que está à sua volta. A Bengala Supersônica foi
-            criada para quem não abre mão de estilo, segurança e confiança. Tecnologia de ponta
-            encontra tradição em um só acessório.
-          </p>
         </div>
       </section>
 
