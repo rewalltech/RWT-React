@@ -19,10 +19,6 @@ export default function Home() {
             criada para quem não abre mão de estilo, segurança e confiança. Tecnologia de ponta
             encontra tradição em um só acessório.
           </p>
-
-          <Link to="/pedido" className="btn">
-            Quero a minha
-          </Link>
         </div>
       </section>
 

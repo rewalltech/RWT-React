@@ -83,7 +83,7 @@ export default function Historia() {
                 tecnologia assistiva de baixo custo.
               </p>
 
-              <h3 className="jornal-subtitulo-secao">Os Desenvolvedores</h3>
+              <h3 className="jornal-subtitulo-secao">Os Colaboradores</h3>
               <p>
                 A Bengala Supersônica é criada por um grupo de estudantes da EEEM Professora Naura
                 Teixeira Pinheiro:
@@ -96,6 +96,12 @@ export default function Historia() {
                 <li>Emylli</li>
                 <li>Tuany</li>
               </ul>
+
+              <h3 className="jornal-subtitulo-secao">Os Fundadores do Site</h3>
+              <p>
+                Este site foi idealizado e criado por Emylli e Weslley, responsáveis por dar vida
+                digital ao projeto e levar a história da Bengala Supersônica para mais pessoas.
+              </p>
 
               <h3 className="jornal-subtitulo-secao">Orientação</h3>
               <p>
