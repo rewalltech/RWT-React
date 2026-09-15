@@ -5,47 +5,42 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 @Entity
-public class Patrocinio {
+public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Informe o nome do patrocinador.")
+    @NotBlank(message = "Informe o nome completo.")
     private String nome;
+
+    @NotBlank(message = "Informe um telefone de contato.")
+    private String telefone;
 
     @NotBlank(message = "Informe um e-mail.")
     @Email(message = "Informe um e-mail válido.")
     private String email;
 
-    private String telefone;
+    @NotBlank(message = "Informe o endereço completo.")
+    private String endereco;
 
-    @NotBlank(message = "Selecione o tipo de patrocínio.")
-    private String tipo;
+    @NotBlank(message = "Selecione uma faixa de altura.")
+    private String altura;
 
-    @NotNull(message = "Informe o valor estimado da contribuição.")
-    @DecimalMin(value = "100.0", message = "O valor mínimo é R$ 100,00.")
-    private Double valor;
+    @NotBlank(message = "Selecione a mão de apoio preferida.")
+    private String mao;
 
-    @NotBlank(message = "Descreva a proposta de patrocínio.")
     private String mensagem;
-
-    @NotNull
-    @AssertTrue(message = "É necessário aceitar os termos de patrocínio.")
-    private Boolean termos;
 
     private LocalDateTime dataEnvio;
 
-    public Patrocinio() {
+    public Pedido() {
     }
 
     @PrePersist
@@ -65,14 +60,6 @@ public class Patrocinio {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getTelefone() {
         return telefone;
     }
@@ -81,20 +68,36 @@ public class Patrocinio {
         this.telefone = telefone;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Double getValor() {
-        return valor;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setValor(Double valor) {
-        this.valor = valor;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getAltura() {
+        return altura;
+    }
+
+    public void setAltura(String altura) {
+        this.altura = altura;
+    }
+
+    public String getMao() {
+        return mao;
+    }
+
+    public void setMao(String mao) {
+        this.mao = mao;
     }
 
     public String getMensagem() {
@@ -103,14 +106,6 @@ public class Patrocinio {
 
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
-    }
-
-    public Boolean getTermos() {
-        return termos;
-    }
-
-    public void setTermos(Boolean termos) {
-        this.termos = termos;
     }
 
     public LocalDateTime getDataEnvio() {

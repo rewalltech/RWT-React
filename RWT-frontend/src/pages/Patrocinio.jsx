@@ -12,6 +12,8 @@ export default function Patrocinio() {
   const [mensagem, setMensagem] = useState('')
   const [termos, setTermos] = useState(false)
   const [enviado, setEnviado] = useState(false)
+  const [enviando, setEnviando] = useState(false)
+  const [erroEnvio, setErroEnvio] = useState(false)
 
   const [modalAberto, setModalAberto] = useState(false)
   const [termosRolados, setTermosRolados] = useState(false)
@@ -116,14 +118,42 @@ export default function Patrocinio() {
     termos &&
     valorValido
 
-  function enviarProposta(e) {
+  async function enviarProposta(e) {
     e.preventDefault()
 
     if (!formularioValido) {
       return
     }
 
-    setEnviado(true)
+    setErroEnvio(false)
+    setEnviando(true)
+
+    try {
+      const resposta = await fetch('/api/patrocinio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome,
+          email,
+          telefone,
+          tipo,
+          valor: valorNumerico,
+          mensagem,
+          termos,
+        }),
+      })
+
+      if (!resposta.ok) {
+        throw new Error('Resposta da API com status ' + resposta.status)
+      }
+
+      setEnviando(false)
+      setEnviado(true)
+    } catch (erro) {
+      setEnviando(false)
+      setErroEnvio(true)
+      console.warn('[patrocinio] falha ao enviar proposta:', erro)
+    }
   }
 
   // =========================
@@ -399,10 +429,16 @@ export default function Patrocinio() {
 
                 <button
                   type="submit"
-                  disabled={!formularioValido}
+                  disabled={!formularioValido || enviando}
                 >
-                  Enviar proposta
+                  {enviando ? 'Enviando...' : 'Enviar proposta'}
                 </button>
+
+                {erroEnvio && (
+                  <small className="erro-mensagem">
+                    Não foi possível enviar sua proposta agora. Tente novamente em instantes.
+                  </small>
+                )}
 
               </div>
 
