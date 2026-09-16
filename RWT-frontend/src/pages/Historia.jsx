@@ -12,7 +12,7 @@ export default function Historia() {
           <p className="jornal-data">Santa Maria, RS — Edição especial</p>
           <h1 className="jornal-titulo-principal">Bengala Supersônica</h1>
           <p className="jornal-subtitulo">
-            Comunica Naura · EEEM Professora Naura Teixeira Pinheiro
+            Comunica Naura | EEEM Professora Naura Teixeira Pinheiro
           </p>
           <div className="jornal-linha-dupla" />
         </div>
