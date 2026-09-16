@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://rwt-backend.onrender.com/api/$1" },
+    { "source": "/api/(.*)", "destination": "https://rwt-react.onrender.com" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
