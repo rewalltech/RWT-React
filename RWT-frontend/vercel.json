@@ -1,6 +1,8 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://rwt-react.onrender.com" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/:path*",
+      "destination": "https://backend-rwt-1.onrender.com/api/:path*"
+    }
   ]
 }
