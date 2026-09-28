@@ -1,7 +1,107 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
+import ThemeToggle from "../components/ThemeToggle.jsx";
 import "../styles/Admin.css";
+
+const vazio = (valor) => valor || "—";
+
+const COLUNAS_PEDIDOS = [
+    { chave: "id", titulo: "ID", classe: "cell-id" },
+    { chave: "nome", titulo: "Nome", classe: "cell-strong" },
+    { chave: "telefone", titulo: "Telefone" },
+    { chave: "email", titulo: "E-mail" },
+    { chave: "endereco", titulo: "Endereço" },
+    { chave: "altura", titulo: "Altura" },
+    {
+        chave: "mao",
+        titulo: "Mão",
+        render: (p) => (p.mao ? <span className="adm-pill">{p.mao}</span> : "—"),
+    },
+    {
+        chave: "mensagem",
+        titulo: "Mensagem",
+        classe: "cell-msg",
+        render: (p) => vazio(p.mensagem),
+    },
+];
+
+const COLUNAS_PATROCINIOS = [
+    { chave: "id", titulo: "ID", classe: "cell-id" },
+    { chave: "nome", titulo: "Nome", classe: "cell-strong" },
+    { chave: "email", titulo: "E-mail" },
+    { chave: "telefone", titulo: "Telefone" },
+    {
+        chave: "tipo",
+        titulo: "Tipo",
+        render: (p) => (p.tipo ? <span className="adm-pill">{p.tipo}</span> : "—"),
+    },
+    {
+        chave: "valor",
+        titulo: "Valor",
+        render: (p) =>
+            p.valor ? `R$ ${Number(p.valor).toFixed(2).replace(".", ",")}` : "—",
+    },
+    {
+        chave: "mensagem",
+        titulo: "Mensagem",
+        classe: "cell-msg",
+        render: (p) => vazio(p.mensagem),
+    },
+    {
+        chave: "termos",
+        titulo: "Termos",
+        render: (p) => (
+            <span className={`adm-pill ${p.termos ? "ok" : "no"}`}>
+                {p.termos ? "Aceito" : "Não"}
+            </span>
+        ),
+    },
+];
+
+function Tabela({ colunas, linhas }) {
+    return (
+        <div className="table-container">
+            <table className="adm-table">
+                <thead>
+                    <tr>
+                        {colunas.map((c) => (
+                            <th key={c.chave}>{c.titulo}</th>
+                        ))}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {linhas.map((linha) => (
+                        <tr key={linha.id}>
+                            {colunas.map((c) => (
+                                <td
+                                    key={c.chave}
+                                    data-label={c.titulo}
+                                    className={c.classe}
+                                >
+                                    {c.render ? c.render(linha) : vazio(linha[c.chave])}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+}
+
+function EstadoVazio({ texto }) {
+    return (
+        <div className="empty-state">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+                <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+            </svg>
+            {texto}
+        </div>
+    );
+}
 
 export default function Admin() {
     const [pedidos, setPedidos] = useState([]);
@@ -21,55 +121,44 @@ export default function Admin() {
             return;
         }
 
-        carregarDados(token);
-    }, [navigate]);
+        async function carregarDados() {
+            try {
+                const headers = {
+                    Authorization: `Bearer ${token}`,
+                };
 
-    async function carregarDados(token) {
-        try {
-            setCarregando(true);
-            setErro("");
-
-            const headers = {
-                Authorization: `Bearer ${token}`,
-            };
-
-            const [respostaPedidos, respostaPatrocinios] =
-                await Promise.all([
-                    fetch("/api/pedido", {
-                        headers,
-                    }),
-                    fetch("/api/patrocinio", {
-                        headers,
-                    }),
+                const [respostaPedidos, respostaPatrocinios] = await Promise.all([
+                    fetch("/api/pedido", { headers }),
+                    fetch("/api/patrocinio", { headers }),
                 ]);
 
-            if (
-                respostaPedidos.status === 401 ||
-                respostaPedidos.status === 403 ||
-                respostaPatrocinios.status === 401 ||
-                respostaPatrocinios.status === 403
-            ) {
-                localStorage.removeItem("rwt_admin_token");
-                navigate("/admin/login");
-                return;
+                if (
+                    respostaPedidos.status === 401 ||
+                    respostaPedidos.status === 403 ||
+                    respostaPatrocinios.status === 401 ||
+                    respostaPatrocinios.status === 403
+                ) {
+                    localStorage.removeItem("rwt_admin_token");
+                    navigate("/admin/login");
+                    return;
+                }
+
+                if (!respostaPedidos.ok || !respostaPatrocinios.ok) {
+                    throw new Error("Erro ao carregar os dados.");
+                }
+
+                setPedidos(await respostaPedidos.json());
+                setPatrocinios(await respostaPatrocinios.json());
+            } catch (error) {
+                console.error(error);
+                setErro("Não foi possível carregar os dados.");
+            } finally {
+                setCarregando(false);
             }
-
-            if (!respostaPedidos.ok || !respostaPatrocinios.ok) {
-                throw new Error("Erro ao carregar os dados.");
-            }
-
-            const dadosPedidos = await respostaPedidos.json();
-            const dadosPatrocinios = await respostaPatrocinios.json();
-
-            setPedidos(dadosPedidos);
-            setPatrocinios(dadosPatrocinios);
-        } catch (error) {
-            console.error(error);
-            setErro("Não foi possível carregar os dados.");
-        } finally {
-            setCarregando(false);
         }
-    }
+
+        carregarDados();
+    }, [navigate]);
 
     function sair() {
         localStorage.removeItem("rwt_admin_token");
@@ -77,55 +166,37 @@ export default function Admin() {
     }
 
     return (
-        <div className="admin-dashboard">
+        <div className="rwt-admin rwt-dash">
 
             <header className="admin-topbar">
 
-                <div>
-                    <h1>Painel Administrativo</h1>
+                <div className="admin-topbar-title">
+                    <span className="adm-logo">Painel Administrativo</span>
                     <p>RWT - Projeto Bengala</p>
                 </div>
 
                 <div className="admin-topbar-actions">
+                    <ThemeToggle tema={tema} alternarTema={alternarTema} />
 
-                    <button
-                        className="admin-theme-toggle"
-                        onClick={alternarTema}
-                        aria-label={
-                            tema === "dark"
-                                ? "Ativar tema claro"
-                                : "Ativar tema escuro"
-                        }
-                        title={
-                            tema === "dark"
-                                ? "Ativar tema claro"
-                                : "Ativar tema escuro"
-                        }
-                    >
-                        {tema === "dark" ? "☀" : "☾"}
+                    <button className="logout-button" onClick={sair}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <path d="m16 17 5-5-5-5" />
+                            <path d="M21 12H9" />
+                        </svg>
+                        <span>Sair</span>
                     </button>
-
-                    <button
-                        className="logout-button"
-                        onClick={sair}
-                    >
-                        Sair
-                    </button>
-
                 </div>
 
             </header>
 
             <main className="admin-content">
 
-                <div className="admin-tabs">
-
+                <div className="admin-tabs" role="tablist">
                     <button
-                        className={
-                            aba === "pedidos"
-                                ? "tab-button active"
-                                : "tab-button"
-                        }
+                        role="tab"
+                        aria-selected={aba === "pedidos"}
+                        className={aba === "pedidos" ? "tab-button active" : "tab-button"}
                         onClick={() => setAba("pedidos")}
                     >
                         Pedidos
@@ -133,226 +204,61 @@ export default function Admin() {
                     </button>
 
                     <button
-                        className={
-                            aba === "patrocinios"
-                                ? "tab-button active"
-                                : "tab-button"
-                        }
+                        role="tab"
+                        aria-selected={aba === "patrocinios"}
+                        className={aba === "patrocinios" ? "tab-button active" : "tab-button"}
                         onClick={() => setAba("patrocinios")}
                     >
                         Patrocínios
                         <span>{patrocinios.length}</span>
                     </button>
-
                 </div>
 
                 {erro && (
-                    <div className="admin-error dashboard-error">
+                    <div className="admin-error dashboard-error" role="alert">
                         {erro}
                     </div>
                 )}
 
                 {carregando ? (
                     <div className="admin-loading">
+                        <div className="adm-spinner" aria-hidden="true" />
                         Carregando dados...
                     </div>
                 ) : (
-                    <>
-                        {aba === "pedidos" && (
-                            <section className="admin-section">
+                    <div className="admin-section">
 
+                        {aba === "pedidos" && (
+                            <>
                                 <div className="section-title">
-                                    <div>
-                                        <h2>Pedidos de bengala</h2>
-                                        <p>
-                                            Solicitações recebidas pelo site.
-                                        </p>
-                                    </div>
+                                    <h2>Pedidos de bengala</h2>
+                                    <p>Solicitações recebidas pelo site.</p>
                                 </div>
 
                                 {pedidos.length === 0 ? (
-                                    <div className="empty-state">
-                                        Nenhum pedido recebido ainda.
-                                    </div>
+                                    <EstadoVazio texto="Nenhum pedido recebido ainda." />
                                 ) : (
-                                    <div className="table-container">
-
-                                        <table>
-
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Nome</th>
-                                                    <th>Telefone</th>
-                                                    <th>E-mail</th>
-                                                    <th>Endereço</th>
-                                                    <th>Altura</th>
-                                                    <th>Mão</th>
-                                                    <th>Mensagem</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-
-                                                {pedidos.map((pedido) => (
-                                                    <tr key={pedido.id}>
-
-                                                        <td>
-                                                            {pedido.id}
-                                                        </td>
-
-                                                        <td>
-                                                            {pedido.nome}
-                                                        </td>
-
-                                                        <td>
-                                                            {pedido.telefone}
-                                                        </td>
-
-                                                        <td>
-                                                            {pedido.email}
-                                                        </td>
-
-                                                        <td>
-                                                            {pedido.endereco}
-                                                        </td>
-
-                                                        <td>
-                                                            {pedido.altura}
-                                                        </td>
-
-                                                        <td>
-                                                            {pedido.mao}
-                                                        </td>
-
-                                                        <td>
-                                                            {pedido.mensagem || "—"}
-                                                        </td>
-
-                                                    </tr>
-                                                ))}
-
-                                            </tbody>
-
-                                        </table>
-
-                                    </div>
+                                    <Tabela colunas={COLUNAS_PEDIDOS} linhas={pedidos} />
                                 )}
-
-                            </section>
+                            </>
                         )}
 
                         {aba === "patrocinios" && (
-                            <section className="admin-section">
-
+                            <>
                                 <div className="section-title">
-                                    <div>
-                                        <h2>Patrocínios</h2>
-                                        <p>
-                                            Interessados em apoiar o projeto.
-                                        </p>
-                                    </div>
+                                    <h2>Patrocínios</h2>
+                                    <p>Interessados em apoiar o projeto.</p>
                                 </div>
 
                                 {patrocinios.length === 0 ? (
-                                    <div className="empty-state">
-                                        Nenhum patrocínio recebido ainda.
-                                    </div>
+                                    <EstadoVazio texto="Nenhum patrocínio recebido ainda." />
                                 ) : (
-                                    <div className="table-container">
-
-                                        <table>
-
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Nome</th>
-                                                    <th>E-mail</th>
-                                                    <th>Telefone</th>
-                                                    <th>Tipo</th>
-                                                    <th>Valor</th>
-                                                    <th>Mensagem</th>
-                                                    <th>Termos</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-
-                                                {patrocinios.map(
-                                                    (patrocinio) => (
-                                                        <tr
-                                                            key={
-                                                                patrocinio.id
-                                                            }
-                                                        >
-
-                                                            <td>
-                                                                {
-                                                                    patrocinio.id
-                                                                }
-                                                            </td>
-
-                                                            <td>
-                                                                {
-                                                                    patrocinio.nome
-                                                                }
-                                                            </td>
-
-                                                            <td>
-                                                                {
-                                                                    patrocinio.email
-                                                                }
-                                                            </td>
-
-                                                            <td>
-                                                                {
-                                                                    patrocinio.telefone
-                                                                }
-                                                            </td>
-
-                                                            <td>
-                                                                {
-                                                                    patrocinio.tipo
-                                                                }
-                                                            </td>
-
-                                                            <td>
-                                                                {patrocinio.valor
-                                                                    ? `R$ ${Number(
-                                                                          patrocinio.valor
-                                                                      ).toFixed(
-                                                                          2
-                                                                      )}`
-                                                                    : "—"}
-                                                            </td>
-
-                                                            <td>
-                                                                {
-                                                                    patrocinio.mensagem ||
-                                                                    "—"
-                                                                }
-                                                            </td>
-
-                                                            <td>
-                                                                {patrocinio.termos
-                                                                    ? "Aceito"
-                                                                    : "Não"}
-                                                            </td>
-
-                                                        </tr>
-                                                    )
-                                                )}
-
-                                            </tbody>
-
-                                        </table>
-
-                                    </div>
+                                    <Tabela colunas={COLUNAS_PATROCINIOS} linhas={patrocinios} />
                                 )}
-
-                            </section>
+                            </>
                         )}
-                    </>
+
+                    </div>
                 )}
 
             </main>

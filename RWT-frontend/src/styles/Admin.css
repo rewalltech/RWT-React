@@ -1,24 +1,182 @@
-* {
-    box-sizing: border-box;
+/* ==========================================================================
+   Admin + LoginAdmin — segue a identidade do site (azul-noite / azul-céu)
+   e o tema claro/escuro controlado por [data-theme] no <html>.
+   Tudo é escopado em .rwt-admin para não vazar para o resto do site.
+   ========================================================================== */
+
+.rwt-admin {
+    /* tema claro (padrão) */
+    --a-surface: var(--card-bg);
+    --a-border: var(--card-borda);
+    --a-text: var(--texto);
+    --a-muted: var(--texto-suave);
+    --a-input-bg: var(--bg);
+    --a-head-bg: rgba(10, 24, 48, 0.04);
+    --a-row-hover: rgba(63, 193, 255, 0.07);
+    --a-badge-bg: rgba(63, 193, 255, 0.16);
+    --a-badge-text: #0B5F8F;
+    --a-ok-bg: rgba(22, 163, 74, 0.12);
+    --a-ok-text: #15803D;
+    --a-no-bg: rgba(10, 24, 48, 0.07);
+    --a-no-text: #4A5A72;
+    --a-err-bg: #FDECEC;
+    --a-err-text: #B42318;
+    --a-err-border: rgba(180, 35, 24, 0.25);
+    --a-shadow: 0 18px 40px -18px rgba(10, 24, 48, 0.28);
+
+    color: var(--a-text);
+    font-family: var(--fonte-corpo);
+    color-scheme: light;
 }
 
-.admin-page {
+[data-theme="dark"] .rwt-admin {
+    --a-head-bg: rgba(245, 248, 252, 0.04);
+    --a-row-hover: rgba(63, 193, 255, 0.08);
+    --a-badge-bg: rgba(63, 193, 255, 0.14);
+    --a-badge-text: var(--azul-ceu-suave);
+    --a-ok-bg: rgba(74, 222, 128, 0.13);
+    --a-ok-text: #86EFAC;
+    --a-no-bg: rgba(245, 248, 252, 0.08);
+    --a-no-text: var(--cinza-texto);
+    --a-err-bg: rgba(248, 113, 113, 0.12);
+    --a-err-text: #FCA5A5;
+    --a-err-border: rgba(248, 113, 113, 0.3);
+    --a-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+    color-scheme: dark;
+}
+
+.rwt-admin svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ---------- Logo (mesma marca do header do site) ---------- */
+
+.adm-logo {
+    position: relative;
+    display: inline-block;
+    padding-left: 18px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    color: var(--branco);
+}
+
+.adm-logo::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--azul-ceu);
+    box-shadow: 0 0 0 3px rgba(63, 193, 255, 0.2),
+        -14px 0 6px -2px rgba(63, 193, 255, 0.35);
+}
+
+/* ---------- Botão de ícone (tema) ---------- */
+
+.adm-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(245, 248, 252, 0.22);
+    background: rgba(245, 248, 252, 0.04);
+    color: var(--branco);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.adm-icon-btn:hover {
+    border-color: var(--azul-ceu);
+    color: var(--azul-ceu);
+    transform: scale(1.06);
+}
+
+.rwt-admin button:focus-visible,
+.rwt-admin a:focus-visible,
+.rwt-admin input:focus-visible {
+    outline: 2px solid var(--azul-ceu);
+    outline-offset: 3px;
+}
+
+/* ==========================================================================
+   LOGIN
+   ========================================================================== */
+
+.rwt-login {
+    position: relative;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 30px;
-    background: #f4f6f8;
-    position: relative;
+    padding: 32px 20px;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse 900px 500px at 80% 10%, rgba(63, 193, 255, 0.2), transparent 60%),
+        linear-gradient(180deg, var(--preto) 0%, var(--azul-noite) 100%);
 }
 
+/* linhas de onda sônica, como no hero */
+.rwt-login::before,
+.rwt-login::after {
+    content: "";
+    position: absolute;
+    left: -10%;
+    width: 130%;
+    border-top: 1px solid rgba(143, 224, 255, 0.14);
+    transform: rotate(-6deg);
+    pointer-events: none;
+}
+
+.rwt-login::before { top: 30%; }
+.rwt-login::after { top: 70%; border-top-color: rgba(143, 224, 255, 0.08); }
+
+.rwt-login .adm-login-tools {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.adm-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--cinza-texto);
+    transition: color 0.2s ease;
+}
+
+.adm-back-link svg { width: 16px; height: 16px; }
+.adm-back-link:hover { color: var(--branco); }
+
 .login-card {
+    position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 430px;
-    background: white;
     padding: 40px;
-    border-radius: 18px;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    background: var(--a-surface);
+    border: 1px solid var(--a-border);
+    box-shadow: var(--a-shadow), 0 0 0 1px rgba(63, 193, 255, 0.06);
 }
 
 .login-header {
@@ -26,14 +184,36 @@
     margin-bottom: 30px;
 }
 
+.login-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--a-badge-bg);
+    color: var(--a-badge-text);
+    font-family: var(--fonte-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.login-badge svg { width: 14px; height: 14px; }
+
 .login-header h1 {
-    margin: 0 0 8px;
-    font-size: 28px;
+    margin: 0 0 6px;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--a-text);
+    line-height: 1.25;
 }
 
 .login-header p {
     margin: 0;
-    color: #777;
+    color: var(--a-muted);
+    font-size: 0.95rem;
 }
 
 .admin-field {
@@ -43,23 +223,33 @@
 .admin-field label {
     display: block;
     margin-bottom: 8px;
+    font-size: 0.85rem;
     font-weight: 600;
+    color: var(--a-text);
 }
 
 .admin-field input {
     width: 100%;
     padding: 13px 15px;
-    border: 1px solid #d5d9dd;
-    border-radius: 9px;
-    font-size: 15px;
+    border: 1px solid var(--input-borda);
+    border-radius: 10px;
+    background: var(--a-input-bg);
+    color: var(--a-text);
+    font-family: inherit;
+    font-size: 0.95rem;
     outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-field input::placeholder {
+    color: var(--a-muted);
+    opacity: 0.7;
 }
 
 .admin-field input:focus {
-    border-color: #333;
+    border-color: var(--azul-ceu);
+    box-shadow: 0 0 0 4px rgba(63, 193, 255, 0.18);
 }
-
-/* CAMPO DE SENHA */
 
 .password-wrapper {
     position: relative;
@@ -67,7 +257,7 @@
 }
 
 .password-wrapper input {
-    padding-right: 50px;
+    padding-right: 52px;
 }
 
 .password-toggle {
@@ -75,42 +265,43 @@
     right: 5px;
     top: 50%;
     transform: translateY(-50%);
-
     width: 40px;
     height: 40px;
-
-    border: none;
-    background: transparent;
-
-    cursor: pointer;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--a-muted);
+    cursor: pointer;
+    transition: color 0.2s ease;
 }
 
 .password-toggle:hover {
-    opacity: 0.7;
+    color: var(--azul-ceu);
 }
 
-/* BOTÃO DE LOGIN */
-
+/* Botão principal — mesmo estilo do .btn do site */
 .admin-button {
     width: 100%;
+    padding: 15px;
     border: none;
-    border-radius: 9px;
-    padding: 14px;
-    font-size: 16px;
+    border-radius: 999px;
+    background: var(--azul-ceu);
+    color: var(--preto);
+    font-family: inherit;
+    font-size: 0.95rem;
     font-weight: 600;
+    letter-spacing: 0.02em;
     cursor: pointer;
-    background: #222;
-    color: white;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
-.admin-button:hover {
-    opacity: 0.9;
+.admin-button:hover:not(:disabled) {
+    background: var(--azul-ceu-suave);
+    box-shadow: 0 8px 24px -6px rgba(63, 193, 255, 0.55);
+    transform: translateY(-1px);
 }
 
 .admin-button:disabled {
@@ -118,44 +309,51 @@
     cursor: not-allowed;
 }
 
-/* ERRO */
-
 .admin-error {
-    background: #ffe8e8;
-    color: #b42318;
-    padding: 12px;
-    border-radius: 8px;
     margin-bottom: 18px;
-    font-size: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--a-err-border);
+    background: var(--a-err-bg);
+    color: var(--a-err-text);
+    font-size: 0.88rem;
 }
 
-/* PAINEL */
+/* ==========================================================================
+   PAINEL
+   ========================================================================== */
 
-.admin-dashboard {
+.rwt-dash {
     min-height: 100vh;
-    background: #f4f6f8;
+    background: var(--bg);
 }
 
+/* barra do topo — preta nos dois temas, igual ao header do site */
 .admin-topbar {
-    background: white;
-    padding: 22px 35px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #e5e7eb;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 32px;
+    background: var(--preto);
+    border-bottom: 1px solid rgba(63, 193, 255, 0.15);
 }
 
-.admin-topbar h1 {
+.admin-topbar-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-topbar-title p {
     margin: 0;
-    font-size: 25px;
+    padding-left: 18px;
+    font-size: 0.78rem;
+    color: var(--cinza-texto);
 }
-
-.admin-topbar p {
-    margin: 5px 0 0;
-    color: #777;
-}
-
-/* AÇÕES DO TOPO */
 
 .admin-topbar-actions {
     display: flex;
@@ -163,185 +361,285 @@
     gap: 10px;
 }
 
-/* BOTÃO DE TEMA */
-
-.admin-theme-toggle {
-    width: 42px;
-    height: 42px;
-
-    border: 1px solid #ddd;
-    border-radius: 50%;
-
-    background: white;
-    color: #222;
-
-    font-size: 19px;
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
-}
-
-.admin-theme-toggle:hover {
-    background: #f1f1f1;
-}
-
-/* SAIR */
-
 .logout-button {
-    border: 1px solid #ddd;
-    background: white;
-    padding: 10px 18px;
-    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 18px;
+    border: 1px solid rgba(245, 248, 252, 0.22);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--branco);
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 500;
     cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
+
+.logout-button svg { width: 16px; height: 16px; }
 
 .logout-button:hover {
-    background: #f5f5f5;
+    border-color: var(--azul-ceu);
+    color: var(--azul-ceu);
+    background: rgba(63, 193, 255, 0.08);
 }
-
-/* CONTEÚDO */
 
 .admin-content {
-    padding: 30px 35px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px;
 }
 
-/* ABAS */
+/* ---------- Abas ---------- */
 
 .admin-tabs {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 24px;
 }
 
 .tab-button {
-    border: none;
-    background: white;
-    padding: 12px 20px;
-    border-radius: 9px;
-    cursor: pointer;
-    font-size: 15px;
-    display: flex;
-    gap: 10px;
+    display: inline-flex;
     align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    border: 1px solid var(--a-border);
+    border-radius: 999px;
+    background: var(--a-surface);
+    color: var(--a-text);
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.tab-button:hover {
+    border-color: var(--azul-ceu);
 }
 
 .tab-button span {
-    background: #e9ecef;
-    border-radius: 20px;
-    padding: 2px 8px;
-    font-size: 12px;
+    min-width: 24px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--a-no-bg);
+    font-family: var(--fonte-mono);
+    font-size: 0.75rem;
+    text-align: center;
 }
 
 .tab-button.active {
-    background: #222;
-    color: white;
+    border-color: var(--azul-ceu);
+    background: var(--azul-ceu);
+    color: var(--preto);
 }
 
 .tab-button.active span {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(5, 7, 12, 0.14);
 }
 
-/* SEÇÃO */
+/* ---------- Painel de conteúdo ---------- */
 
 .admin-section {
-    background: white;
-    border-radius: 14px;
-    padding: 25px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 28px;
+    border-radius: 18px;
+    background: var(--a-surface);
+    border: 1px solid var(--a-border);
+    box-shadow: var(--a-shadow);
 }
 
 .section-title {
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .section-title h2 {
-    margin: 0 0 5px;
+    margin: 0 0 4px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--a-text);
 }
 
 .section-title p {
     margin: 0;
-    color: #777;
+    font-size: 0.9rem;
+    color: var(--a-muted);
 }
 
-/* TABELA */
+/* ---------- Tabela ---------- */
 
 .table-container {
     width: 100%;
     overflow-x: auto;
+    border: 1px solid var(--a-border);
+    border-radius: 12px;
 }
 
-table {
+.adm-table {
     width: 100%;
-    border-collapse: collapse;
     min-width: 900px;
+    border-collapse: collapse;
 }
 
-th,
-td {
+.adm-table th,
+.adm-table td {
+    padding: 14px 16px;
     text-align: left;
-    padding: 14px 12px;
-    border-bottom: 1px solid #eee;
     vertical-align: top;
+    border-bottom: 1px solid var(--a-border);
+    font-size: 0.88rem;
 }
 
-th {
-    background: #f8f9fa;
-    font-size: 14px;
+.adm-table th {
+    background: var(--a-head-bg);
+    color: var(--a-muted);
+    font-family: var(--fonte-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
-td {
-    font-size: 14px;
+.adm-table td {
+    color: var(--a-text);
 }
 
-/* ESTADOS */
+.adm-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.adm-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.adm-table tbody tr:hover {
+    background: var(--a-row-hover);
+}
+
+.adm-table td.cell-id {
+    font-family: var(--fonte-mono);
+    color: var(--a-muted);
+}
+
+.adm-table td.cell-strong {
+    font-weight: 600;
+}
+
+.adm-table td.cell-msg {
+    max-width: 280px;
+    min-width: 160px;
+    overflow-wrap: anywhere;
+    color: var(--a-muted);
+}
+
+/* selos */
+
+.adm-pill {
+    display: inline-block;
+    padding: 3px 11px;
+    border-radius: 999px;
+    background: var(--a-badge-bg);
+    color: var(--a-badge-text);
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.adm-pill.ok { background: var(--a-ok-bg); color: var(--a-ok-text); }
+.adm-pill.no { background: var(--a-no-bg); color: var(--a-no-text); }
+
+/* ---------- Estados ---------- */
 
 .empty-state,
 .admin-loading {
-    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 56px 20px;
     text-align: center;
-    color: #777;
+    color: var(--a-muted);
+    font-size: 0.95rem;
+}
+
+.empty-state svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.55;
+}
+
+.adm-spinner {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid var(--a-border);
+    border-top-color: var(--azul-ceu);
+    animation: adm-spin 0.8s linear infinite;
+}
+
+@keyframes adm-spin {
+    to { transform: rotate(360deg); }
 }
 
 .dashboard-error {
     margin-bottom: 20px;
 }
 
-/* RESPONSIVO */
+/* ==========================================================================
+   RESPONSIVO — no celular a tabela vira lista de cartões
+   ========================================================================== */
 
-@media (max-width: 700px) {
-    .admin-topbar {
-        padding: 20px;
+@media (max-width: 760px) {
+    .admin-topbar { padding: 14px 18px; }
+    .admin-content { padding: 20px 16px; }
+    .admin-section { padding: 18px 14px; }
+    .login-card { padding: 28px 22px; }
+    .logout-button span { display: none; }
+    .logout-button { width: 40px; padding: 0; justify-content: center; }
+
+    .table-container { border: none; overflow: visible; }
+    .adm-table { min-width: 0; }
+    .adm-table thead { display: none; }
+
+    .adm-table,
+    .adm-table tbody,
+    .adm-table tr,
+    .adm-table td { display: block; width: 100%; }
+
+    .adm-table tr {
+        margin-bottom: 14px;
+        padding: 6px 0;
+        border: 1px solid var(--a-border);
+        border-radius: 12px;
+        background: var(--a-input-bg);
     }
 
-    .admin-topbar h1 {
-        font-size: 20px;
+    .adm-table tbody tr:hover { background: var(--a-input-bg); }
+
+    .adm-table td {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 9px 14px;
+        border-bottom: none;
+        text-align: right;
+        overflow-wrap: anywhere;
     }
 
-    .admin-content {
-        padding: 20px;
+    .adm-table td::before {
+        content: attr(data-label);
+        flex-shrink: 0;
+        color: var(--a-muted);
+        font-family: var(--fonte-mono);
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding-top: 2px;
     }
 
-    .admin-section {
-        padding: 15px;
-    }
-
-    .login-card {
-        padding: 25px;
-    }
-
-    .admin-topbar-actions {
-        gap: 6px;
-    }
-
-    .admin-theme-toggle {
-        width: 40px;
-        height: 40px;
-    }
+    .adm-table td.cell-msg { max-width: none; min-width: 0; }
 }
