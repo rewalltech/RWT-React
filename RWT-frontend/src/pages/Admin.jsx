@@ -138,8 +138,17 @@ export default function Admin() {
                     respostaPatrocinios.status === 401 ||
                     respostaPatrocinios.status === 403
                 ) {
+                    const status =
+                        respostaPedidos.status === 401 || respostaPedidos.status === 403
+                            ? respostaPedidos.status
+                            : respostaPatrocinios.status;
+                    console.warn("Sessão recusada pelo servidor. Status:", status);
                     localStorage.removeItem("rwt_admin_token");
-                    navigate("/admin/login");
+                    navigate("/admin/login", {
+                        state: {
+                            erro: `O servidor recusou a sessão (erro ${status}). Faça login novamente.`,
+                        },
+                    });
                     return;
                 }
 

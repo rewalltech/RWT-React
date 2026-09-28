@@ -319,6 +319,16 @@
     font-size: 0.88rem;
 }
 
+.admin-info {
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(63, 193, 255, 0.3);
+    background: var(--a-badge-bg);
+    color: var(--a-badge-text);
+    font-size: 0.88rem;
+}
+
 /* ==========================================================================
    PAINEL
    ========================================================================== */

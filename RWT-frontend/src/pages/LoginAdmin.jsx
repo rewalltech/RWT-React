@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import ThemeToggle from "../components/ThemeToggle.jsx";
 import "../styles/Admin.css";
@@ -8,16 +8,31 @@ export default function LoginAdmin() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [mostrarSenha, setMostrarSenha] = useState(false);
-    const [erro, setErro] = useState("");
+    const [erro, setErro] = useState(useLocation().state?.erro ?? "");
     const [carregando, setCarregando] = useState(false);
+    const [demorando, setDemorando] = useState(false);
 
     const navigate = useNavigate();
     const { tema, alternarTema } = useTheme();
+
+    // O backend (Render) "dorme" quando fica sem uso. Ao abrir a tela de login
+    // já mandamos uma requisição para acordá-lo enquanto a pessoa digita.
+    useEffect(() => {
+        fetch("/api/pedido").catch(() => {});
+    }, []);
+
+    // Se o login passar de 4s, avisa que o servidor está acordando.
+    useEffect(() => {
+        if (!carregando) return;
+        const timer = setTimeout(() => setDemorando(true), 4000);
+        return () => clearTimeout(timer);
+    }, [carregando]);
 
     async function handleLogin(event) {
         event.preventDefault();
 
         setErro("");
+        setDemorando(false);
         setCarregando(true);
 
         try {
@@ -38,8 +53,16 @@ export default function LoginAdmin() {
             }
 
             const dados = await resposta.json();
+            const token =
+                dados.token ?? dados.accessToken ?? dados.access_token ?? dados.jwt;
 
-            localStorage.setItem("rwt_admin_token", dados.token);
+            if (!token) {
+                console.error("Resposta do login sem token:", dados);
+                setErro("O servidor respondeu, mas não enviou o token de acesso.");
+                return;
+            }
+
+            localStorage.setItem("rwt_admin_token", token);
 
             navigate("/admin");
         } catch (error) {
@@ -47,6 +70,7 @@ export default function LoginAdmin() {
             setErro("Não foi possível conectar ao servidor.");
         } finally {
             setCarregando(false);
+            setDemorando(false);
         }
     }
 
@@ -135,6 +159,13 @@ export default function LoginAdmin() {
                     {erro && (
                         <div className="admin-error" role="alert">
                             {erro}
+                        </div>
+                    )}
+
+                    {demorando && (
+                        <div className="admin-info" role="status">
+                            O servidor está acordando, isso pode levar até 1 minuto na
+                            primeira vez. Aguarde...
                         </div>
                     )}
 
