@@ -1,22 +1,47 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
-import { emailValido, formatarTelefone } from '../hooks/validacao.js'
+import { emailValido, formatarTelefone, formatarCep, montarEndereco } from '../hooks/validacao.js'
+import { buscarCep } from '../services/viacep.js'
 import '../styles/Formulario.css'
 
 const API_URL = '/api/pedido'
 
-const CAMPOS_OBRIGATORIOS = ['nome', 'telefone', 'email', 'endereco', 'altura', 'mao']
+const CAMPOS_OBRIGATORIOS = [
+  'nome', 'telefone', 'email',
+  'cep', 'logradouro', 'numero', 'bairro', 'cidade', 'uf',
+  'altura', 'mao',
+]
 
 const VALORES_INICIAIS = {
   nome: '',
   telefone: '',
   email: '',
-  endereco: '',
+  cep: '',
+  logradouro: '',
+  numero: '',
+  complemento: '',
+  bairro: '',
+  cidade: '',
+  uf: '',
   altura: '',
   mao: '',
   mensagem: '',
+}
+
+// O backend guarda o endereço em um único campo de texto,
+// então os campos separados do formulário são juntados antes de enviar.
+function montarPedido(dados) {
+  return {
+    nome: dados.nome,
+    telefone: dados.telefone,
+    email: dados.email,
+    endereco: montarEndereco(dados),
+    altura: dados.altura,
+    mao: dados.mao,
+    mensagem: dados.mensagem,
+  }
 }
 
 export default function Formulario() {
@@ -25,10 +50,55 @@ export default function Formulario() {
   const [enviando, setEnviando] = useState(false)
   const [sucesso, setSucesso] = useState(false)
   const [avisoOffline, setAvisoOffline] = useState(false)
+  const [buscandoCep, setBuscandoCep] = useState(false)
+  const [cepEncontrado, setCepEncontrado] = useState(false)
+  const buscaAtual = useRef(0)
 
   function atualizarCampo(campo, valor) {
     setDados((atual) => ({ ...atual, [campo]: valor }))
     setErros((atual) => ({ ...atual, [campo]: '' }))
+  }
+
+  async function aoDigitarCep(valor) {
+    const cep = formatarCep(valor)
+    atualizarCampo('cep', cep)
+
+    // qualquer mudança no CEP invalida a busca anterior
+    const idBusca = ++buscaAtual.current
+    setCepEncontrado(false)
+
+    if (cep.length < 9) {
+      setBuscandoCep(false)
+      return
+    }
+
+    setBuscandoCep(true)
+
+    try {
+      const endereco = await buscarCep(cep)
+      if (idBusca !== buscaAtual.current) return // o usuário já digitou outro CEP
+
+      if (!endereco) {
+        setErros((atual) => ({ ...atual, cep: 'CEP não encontrado. Confira os números ou preencha o endereço abaixo.' }))
+        return
+      }
+
+      setDados((atual) => ({ ...atual, ...endereco }))
+      setErros((atual) => ({ ...atual, logradouro: '', bairro: '', cidade: '', uf: '' }))
+      setCepEncontrado(true)
+    } catch (erro) {
+      if (idBusca !== buscaAtual.current) return
+      setErros((atual) => ({ ...atual, cep: 'Não deu pra consultar o CEP agora. Preencha o endereço abaixo.' }))
+      console.warn('[formulario] falha ao consultar ViaCEP:', erro)
+    } finally {
+      if (idBusca === buscaAtual.current) setBuscandoCep(false)
+    }
+  }
+
+  function validarCepAoSair() {
+    if (dados.cep && dados.cep.length < 9 && !erros.cep) {
+      setErros((atual) => ({ ...atual, cep: 'O CEP tem 8 números.' }))
+    }
   }
 
   function validarEmailAoSair() {
@@ -47,6 +117,10 @@ export default function Formulario() {
         novosErros[campo] = 'Preencha este campo.'
       }
     })
+
+    if (dados.cep && dados.cep.length < 9 && !novosErros.cep) {
+      novosErros.cep = 'O CEP tem 8 números.'
+    }
 
     if (dados.email && dados.email.trim() && !novosErros.email) {
       if (!emailValido(dados.email)) {
@@ -73,7 +147,7 @@ export default function Formulario() {
       const resposta = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dados),
+        body: JSON.stringify(montarPedido(dados)),
         signal: controller ? controller.signal : undefined,
       })
 
@@ -184,16 +258,108 @@ export default function Formulario() {
               </div>
 
               <div className="form-grupo">
-                <label htmlFor="endereco">Endereço completo</label>
+                <label htmlFor="cep">CEP</label>
                 <input
                   type="text"
-                  id="endereco"
-                  className={erros.endereco ? 'form-invalido' : ''}
-                  placeholder="Rua, número, bairro, cidade e estado"
-                  value={dados.endereco}
-                  onChange={(e) => atualizarCampo('endereco', e.target.value)}
+                  id="cep"
+                  inputMode="numeric"
+                  autoComplete="postal-code"
+                  className={erros.cep ? 'form-invalido' : ''}
+                  placeholder="00000-000"
+                  maxLength={9}
+                  value={dados.cep}
+                  onChange={(e) => aoDigitarCep(e.target.value)}
+                  onBlur={validarCepAoSair}
                 />
-                <span className="form-erro">{erros.endereco}</span>
+                <span className={`form-erro ${buscandoCep || cepEncontrado ? 'form-info' : ''}`}>
+                  {buscandoCep ? 'Buscando endereço...' : erros.cep || (cepEncontrado ? 'Endereço encontrado ✓' : '')}
+                </span>
+              </div>
+
+              <div className="form-grupo">
+                <label htmlFor="logradouro">Rua</label>
+                <input
+                  type="text"
+                  id="logradouro"
+                  autoComplete="address-line1"
+                  className={erros.logradouro ? 'form-invalido' : ''}
+                  placeholder="Preenchida automaticamente pelo CEP"
+                  value={dados.logradouro}
+                  onChange={(e) => atualizarCampo('logradouro', e.target.value)}
+                />
+                <span className="form-erro">{erros.logradouro}</span>
+              </div>
+
+              <div className="form-linha">
+                <div className="form-grupo">
+                  <label htmlFor="numero">Número da casa</label>
+                  <input
+                    type="text"
+                    id="numero"
+                    className={erros.numero ? 'form-invalido' : ''}
+                    placeholder="Ex.: 120 ou S/N"
+                    value={dados.numero}
+                    onChange={(e) => atualizarCampo('numero', e.target.value)}
+                  />
+                  <span className="form-erro">{erros.numero}</span>
+                </div>
+
+                <div className="form-grupo">
+                  <label htmlFor="complemento">Complemento <span className="form-opcional">opcional</span></label>
+                  <input
+                    type="text"
+                    id="complemento"
+                    autoComplete="address-line2"
+                    placeholder="Apto, bloco, referência..."
+                    value={dados.complemento}
+                    onChange={(e) => atualizarCampo('complemento', e.target.value)}
+                  />
+                  <span className="form-erro"></span>
+                </div>
+              </div>
+
+              <div className="form-grupo">
+                <label htmlFor="bairro">Bairro</label>
+                <input
+                  type="text"
+                  id="bairro"
+                  className={erros.bairro ? 'form-invalido' : ''}
+                  placeholder="Preenchido automaticamente pelo CEP"
+                  value={dados.bairro}
+                  onChange={(e) => atualizarCampo('bairro', e.target.value)}
+                />
+                <span className="form-erro">{erros.bairro}</span>
+              </div>
+
+              <div className="form-linha form-linha--cidade">
+                <div className="form-grupo">
+                  <label htmlFor="cidade">Cidade</label>
+                  <input
+                    type="text"
+                    id="cidade"
+                    className={erros.cidade ? 'form-invalido' : ''}
+                    placeholder="Ex.: Santa Maria"
+                    readOnly={cepEncontrado}
+                    value={dados.cidade}
+                    onChange={(e) => atualizarCampo('cidade', e.target.value)}
+                  />
+                  <span className="form-erro">{erros.cidade}</span>
+                </div>
+
+                <div className="form-grupo">
+                  <label htmlFor="estado">Estado</label>
+                  <input
+                    type="text"
+                    id="estado"
+                    maxLength={2}
+                    className={erros.uf ? 'form-invalido' : ''}
+                    placeholder="RS"
+                    readOnly={cepEncontrado}
+                    value={dados.uf}
+                    onChange={(e) => atualizarCampo('uf', e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))}
+                  />
+                  <span className="form-erro">{erros.uf}</span>
+                </div>
               </div>
             </div>
 

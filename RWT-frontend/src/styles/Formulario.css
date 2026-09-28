@@ -1,4 +1,4 @@
-/* ---------- Hero do formulário ---------- */
+---------- Hero do formulário ----------
 
 .form-hero {
   position: relative;
@@ -524,4 +524,23 @@
   .form-dip {
     flex-direction: column;
   }
+}
+
+/* ---------- Endereço (ViaCEP) ---------- */
+
+.form-linha--cidade {
+  grid-template-columns: 1fr 90px;
+}
+
+.form-info {
+  color: var(--texto-suave);
+}
+
+.form-grupo input[readonly] {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.form-grupo label .form-opcional {
+  margin-left: 4px;
 }

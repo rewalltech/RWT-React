@@ -18,3 +18,16 @@ export function formatarTelefone(valor) {
 export function emailValido(valor) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor.trim())
 }
+
+/** Formata o CEP enquanto a pessoa digita: 00000-000 (máximo de 8 dígitos). */
+export function formatarCep(valor) {
+  const digitos = valor.replace(/\D/g, '').slice(0, 8)
+  return digitos.length > 5 ? `${digitos.slice(0, 5)}-${digitos.slice(5)}` : digitos
+}
+
+/** Junta os campos de endereço em uma única linha, no formato que o backend espera. */
+export function montarEndereco({ logradouro, numero, complemento, bairro, cidade, uf, cep }) {
+  const rua = [logradouro.trim(), numero.trim()].filter(Boolean).join(', ')
+  const partes = [rua, complemento.trim(), bairro.trim(), `${cidade.trim()} - ${uf.trim()}`, `CEP ${cep}`]
+  return partes.filter(Boolean).join(', ')
+}
