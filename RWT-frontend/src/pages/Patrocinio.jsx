@@ -20,6 +20,7 @@ export default function Patrocinio() {
   const [aceitouTermos, setAceitouTermos] = useState(false)
 
   const modalRef = useRef(null)
+  const conteudoRef = useRef(null)
 
   // =========================
   // CONTROLE DO MODAL
@@ -32,6 +33,23 @@ export default function Patrocinio() {
 
     if (modalAberto && !modal.open) {
       modal.showModal()
+
+      // sempre começa lendo do topo
+      if (conteudoRef.current) {
+        conteudoRef.current.scrollTop = 0
+      }
+
+      // se o texto couber inteiro na tela (sem barra de rolagem),
+      // não existe "rolar até o final": libera a leitura como concluída
+      const frame = requestAnimationFrame(() => {
+        const el = conteudoRef.current
+
+        if (el && el.scrollHeight <= el.clientHeight + 10) {
+          setTermosRolados(true)
+        }
+      })
+
+      return () => cancelAnimationFrame(frame)
     }
 
     if (!modalAberto && modal.open) {
@@ -166,7 +184,7 @@ export default function Patrocinio() {
     const chegouAoFinal =
       elemento.scrollTop +
         elemento.clientHeight >=
-      elemento.scrollHeight - 5
+      elemento.scrollHeight - 10
 
     if (chegouAoFinal) {
       setTermosRolados(true)
@@ -401,9 +419,14 @@ export default function Patrocinio() {
                     type="checkbox"
                     id="termos"
                     checked={termos}
-                    onChange={(e) =>
-                      setTermos(e.target.checked)
-                    }
+                    onChange={(e) => {
+                      // marcar só é possível lendo os termos no modal
+                      if (e.target.checked) {
+                        abrirTermos()
+                      } else {
+                        setTermos(false)
+                      }
+                    }}
                     required
                   />
 
@@ -476,9 +499,7 @@ export default function Patrocinio() {
       <dialog
         id="modalTermos"
         ref={modalRef}
-        onCancel={(e) => {
-          e.preventDefault()
-        }}
+        onClose={() => setModalAberto(false)}
       >
 
         <h2>
@@ -487,6 +508,7 @@ export default function Patrocinio() {
 
         <div
           className="modal-conteudo"
+          ref={conteudoRef}
           onScroll={verificarRolagem}
         >
 
@@ -571,14 +593,26 @@ export default function Patrocinio() {
 
         {/* BOTÃO ACEITO */}
 
-        <button
-          type="button"
-          id="fecharModal"
-          disabled={!aceitouTermos}
-          onClick={aceitarTermos}
-        >
-          Aceito
-        </button>
+        <div className="modal-acoes">
+
+          <button
+            type="button"
+            className="btn-cancelar-termos"
+            onClick={() => setModalAberto(false)}
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="button"
+            id="fecharModal"
+            disabled={!aceitouTermos}
+            onClick={aceitarTermos}
+          >
+            Aceito
+          </button>
+
+        </div>
 
       </dialog>
     </>
