@@ -57,6 +57,11 @@ export default function Header({ variant = 'inner', ctaLabel = 'Compre a Sua' })
               <Link to="/historia" onClick={fechar}>História</Link>
               <a href="#patrocinio" onClick={fechar}>Patrocínio</a>
               <a href="#inscricao" onClick={fechar}>{ctaLabel}</a>
+
+              {/* Área administrativa */}
+              <Link to="/admin/login" onClick={fechar}>
+                🔐 Área administrativa
+              </Link>
             </>
           ) : (
             <>
@@ -66,6 +71,11 @@ export default function Header({ variant = 'inner', ctaLabel = 'Compre a Sua' })
               <Link to="/historia" onClick={fechar}>História</Link>
               <Link to="/#patrocinio" onClick={fechar}>Patrocínio</Link>
               <Link to="/" onClick={fechar}>Voltar ao site</Link>
+
+              {/* Área administrativa */}
+              <Link to="/admin/login" onClick={fechar}>
+                🔐 Área administrativa
+              </Link>
             </>
           )}
         </nav>
